@@ -41,14 +41,15 @@ The transformation output will reflect the structure of your `map` object and in
 
 ```js
 const map = {
-  key1: 'static value passed directly to output',
+  foo: 'static value passed directly to output',
   // Structure passed directly to output.
-  key2: [
+  bar: [
     {
-      key2a: 'another static value',
-      // Value defined by mapping rule with an array of transformation objects.
-      // If there is only a single transformation object, no array is necessary.
-      key2b: {
+      static: 'another static value',
+      // Value defined by a mapping rule expressing an array of transformation
+      // objects. If there is only a single transformation object, no array is
+      // necessary.
+      dynamic: {
         $: [
           // Each transformation object uses a special syntax to reference an
           // object, a method to run on it, and an array of parameters to pass.
@@ -76,6 +77,15 @@ const map = {
       },
     },
   ],
+  // Value defined by a single mapping rule executing a method against a
+  // previous output of the same mapping object.
+  progressive: {
+    $: {
+      object: '$.lib._',
+      method: 'toUpper',
+      params: '$.output.bar[0].static',
+    },
+  },
 };
 ```
 
@@ -98,3 +108,5 @@ const jsonMap = new JsonMap(lib, map);
 // Assumes some input data object is already defined.
 const output = await jsonMap.transform(input);
 ```
+
+The [unit tests](https://github.com/karmaniverous/jsonmap/blob/main/lib/JsonMap/JsonMap.test.js) demonstrate this example in action.
