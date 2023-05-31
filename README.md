@@ -23,6 +23,20 @@ const lib = { _, numeral };
 
 You also need to create a `map` object. This is a plain Javascript object that expresses your mapping rules.
 
+## Why?
+
+Mapping data from one form into another is a critical requirement of virtually every application.
+
+`JsonMap` decouples mapping structure from mapping logic... and drives that decoupling deep into the logic layer.
+
+The 'lib` object contains the remaining logic that CAN'T be decoupled, and can be used consistently across your application.
+
+The `map` object is a PLAIN JSON OBJECT, which can easily be stored in a database yet does NOT express code as text and thus exposes a minimal threat surface.
+
+This allows you to transform application logic into structured configuration data and write more generic, flexible applications.
+
+## Usage
+
 The transformation output will reflect the structure of your `map` object and include any static values. To add mapping logic, use a structured value that consists of an object with a single `$` key, like this:
 
 ```js
