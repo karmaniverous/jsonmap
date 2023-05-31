@@ -33,7 +33,7 @@ The `lib` object contains the remaining logic that CAN'T be decoupled, and can b
 
 The `map` object is a [POJO](https://masteringjs.io/tutorials/fundamentals/pojo), which can easily be stored in a database yet does NOT express code as text and thus exposes a minimal threat surface.
 
-This allows you to transform application logic into structured configuration data and write more generic, flexible applications.
+**This allows you to transform application logic into structured configuration data and write more generic, flexible applications.**
 
 ## Usage
 
