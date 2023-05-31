@@ -1,79 +1,125 @@
-# NPM Package Template
+# json-map
 
-You wrote a sweet piece of code! Releasing it on [NPM](https://www.npmjs.com/)
-seems like the obvious next step. Right?
+`JsonMap` is a JSON mapping library, which facilitates the transformation of some input JSON object according to a set of rules.
 
-_Try it!_ Not as easy to do as you might think. At high quality. From scratch.
+Installing `JsonMap` is easy:
 
-So here's a plug-and-play NPM package template that offers the following
-features:
+```bash
+npm install @karmaniverous/json-map
+```
 
-- Tree-shakable support for the latest ES6 goodies with
-  [`eslint`](https://www.npmjs.com/package/eslint) _uber alles_.
+`JsonMap` is _hyper-generic_: you bring your own mapping functions, which may be async and may be combined into complex transformation logic.
 
-- CJS distributions targeting specific browser support scenarios.
+To do this, create a `lib` object, which combines your mapping function libraries into a single object. You can use async functions and organize this in any way that makes sense.
 
-- Command line interfaces for your widget with
-  [`commander`](https://www.npmjs.com/package/commander).
+For example:
 
-- Automated [`lodash`](https://www.npmjs.com/package/lodash) cherry-picking with
-  [`babel-plugin-lodash`](https://www.npmjs.com/package/babel-plugin-lodash).
+```js
+import _ from 'lodash';
+import numeral from 'numeral';
 
-- [`mocha`](https://www.npmjs.com/package/mocha) &
-  [`chai`](https://www.npmjs.com/package/chai) for testing, with examples, and a
-  sweet testing console.
+const lib = { _, numeral };
+```
 
-- In-code access to
-  [`package.json`](https://github.com/karmaniverous/npm-package-template/blob/main/package.json)
-  data, with no warnings to ignore.
+You also need to create a `map` object. This is a plain Javascript object that expresses your mapping rules.
 
-- Code formatting at every save & paste with
-  [`prettier`](https://www.npmjs.com/package/prettier).
+The transformation output will reflect the structure of your `map` object and include any static values. To add mapping logic, use a structured value that consists of an object with a single `$` key, like this:
 
-- Automated documentation of your API with
-  [`jsdoc-to-markdown`](https://www.npmjs.com/package/jsdoc-to-markdown) and
-  assembly of your README with
-  [`concat-md`](https://www.npmjs.com/package/concat-md).
+```js
+const map = {
+  key1: 'static value passed directly to output',
+  // Structure passed directly to output.
+  key2: [
+    {
+      key2a: 'another static value',
+      // Value defined by mapping rule with an array of transformation objects.
+      // If there is only a single transformation object, no array is necessary.
+      key2b: {
+        $: [
+          // Each transformation object uses a special syntax to reference an
+          // object, a method to run on it, and an array of parameters to pass.
+          {
+            object: '$.lib._',
+            method: 'get',
+            params: ['$.input', 'dynamodb.NewImage.roundup.N'],
+          },
+          // The special syntax uses lodash-style paths. Its root object can
+          // reference the lib object ($.lib...), the transformation input
+          // ($.input...), the output generated so far ($.output...), or the
+          // outputs of previous transformation steps ($.[0]..., $.[1]...).
+          {
+            object: '$.lib',
+            method: 'numeral',
+            // If there is only a single param, no array is necessary.
+            params: '$[0]',
+          },
+          {
+            object: '$[0]',
+            method: 'format',
+            params: '$0,0.00',
+          },
+        ],
+      },
+    },
+  ],
+};
+```
 
-- One-button release to GitHub & publish to NPM with
-  [`release-it`](https://www.npmjs.com/package/release-it).
+The transformation process is _generic_ and _asynchronous_. Feel free to use any function from any source in your `lib` object.
 
-**[Click here](https://karmanivero.us/blog/npm-package-template/) for full
-documentation & instructions!**
+Your `lib` object can also include locally defined or anonymous functions. Combined with the `$[i]...` syntax, this allows for complex branching transformation logic.
 
-_If you want to create a React component in an NPM package, use my
-[React Component NPM Package Template](https://github.com/karmaniverous/react-component-npm-package-template)
-instead!_
+Mapping objects are _recursive_. If a mapping object (i.e. `{ $: ... }`) renders another mapping object, it will be processed recursively until it does not.
 
-# Command Line Interface
+Input objects can contain data of any kind, including functions. These can be executed as methods of their parent objects using transformation steps.
 
-```text
-Usage: mycli [options]
+Once a `JsonMap` instance is configured, it can be executed against any input. Configure & execute a `JsonMap` instance like this:
 
-Foos your bar.
+```js
+import { JsonMap } from '@karmaniverous/json-map';
 
-Options:
-  -b, --bar <string>  foo what?
-  -h, --help          display help for command
+// Assumes lib & map are already defined as above.
+const jsonMap = new JsonMap(lib, map);
+
+// Assumes some input data object is already defined.
+const output = await jsonMap.transform(input);
 ```
 
 # API Documentation
 
-```js
-import { foo, PACKAGE_INFO } from '@karmaniverous/npm-package-template`;
-```
+<a name="JsonMap"></a>
 
-<a name="foo"></a>
+## JsonMap
+JsonMap class to apply transformations to a JSON object
 
-## foo(value) ⇒ <code>any</code>
-Returns whatever value is passed.
+**Kind**: global class  
 
-**Kind**: global function  
-**Returns**: <code>any</code> - Whatever value it was passed.  
+* [JsonMap](#JsonMap)
+    * [new JsonMap(lib, map)](#new_JsonMap_new)
+    * [.transform(input)](#JsonMap+transform) ⇒ <code>object</code>
+
+<a name="new_JsonMap_new"></a>
+
+### new JsonMap(lib, map)
+Creates an instance of JsonMap.
+
 
 | Param | Type | Description |
 | --- | --- | --- |
-| value | <code>any</code> | Any value. |
+| lib | <code>object</code> | A collection of function libraries. |
+| map | <code>object</code> | The data mapping configuration. |
+
+<a name="JsonMap+transform"></a>
+
+### jsonMap.transform(input) ⇒ <code>object</code>
+Transforms the input data according to the map configuration.
+
+**Kind**: instance method of [<code>JsonMap</code>](#JsonMap)  
+**Returns**: <code>object</code> - - The transformed data.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| input | <code>object</code> | The input data to be transformed. |
 
 
 ---

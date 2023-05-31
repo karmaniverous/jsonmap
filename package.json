@@ -1,37 +1,27 @@
 {
-  "name": "@karmaniverous/npm-package-template",
-  "bin": {
-    "mycli": "bin/mycli/index.js"
-  },
+  "name": "@karmaniverous/json-map",
   "version": "0.6.1",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/karmaniverous/npm-package-template"
+    "url": "https://github.com/karmaniverous/json-map"
   },
   "author": "Jason G. Williscroft",
   "bugs": {
-    "url": "https://github.com/karmaniverous/npm-package-template/issues"
+    "url": "https://github.com/karmaniverous/json-map/issues"
   },
-  "description": "An ES6 NPM package project template featuring a CLI, test support, automated API docs, release management & more!",
-  "homepage": "https://github.com/karmaniverous/npm-package-template#readme",
+  "description": "A hyper-generic JSON mapping library.",
+  "homepage": "https://github.com/karmaniverous/json-map#readme",
   "keywords": [
-    "chai",
-    "docs",
+    "json",
+    "map",
     "es6",
-    "javascript",
-    "npm",
-    "mocha",
-    "package",
-    "release",
-    "testing",
-    "template"
+    "javascript"
   ],
   "license": "BSD-3-Clause",
   "dependencies": {
-    "commander": "^10.0.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
@@ -52,6 +42,7 @@
     "eslint-plugin-mocha": "^10.1.0",
     "jsdoc-to-markdown": "^8.0.0",
     "mocha": "^10.2.0",
+    "numeral": "^2.0.6",
     "prettier": "^2.8.5",
     "release-it": "^15.9.0"
   },
@@ -83,8 +74,8 @@
   },
   "scripts": {
     "build": "babel lib -d dist/default/lib --delete-dir-on-start --config-file ./dist/default/.babelrc",
-    "doc": "jsdoc2md -c doc/jsdoc.config.json -f lib/**/*.* -t doc/api-template.hbs > doc/3-api.jsdoc2.md && concat-md doc --hide-anchor-links > README.md",
-    "lint": "eslint lib/** bin/**",
+    "doc": "jsdoc2md -c doc/jsdoc.config.json -f lib/**/*.* -t doc/api-template.hbs > doc/2-api.jsdoc2.md && concat-md doc --hide-anchor-links > README.md",
+    "lint": "eslint lib/**",
     "package": "npm run lint && npm run test && npm run build && npm run doc",
     "release": "npm run package && getdotenv -- release-it",
     "test": "getdotenv -c \"mocha\" -p ./ ./env -d dev -y ./env/dynamic.js"
