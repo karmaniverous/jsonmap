@@ -1,19 +1,19 @@
 {
-  "name": "@karmaniverous/json-map",
+  "name": "@karmaniverous/jsonmap",
   "version": "0.0.1",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/karmaniverous/json-map"
+    "url": "https://github.com/karmaniverous/jsonmap"
   },
   "author": "Jason G. Williscroft",
   "bugs": {
-    "url": "https://github.com/karmaniverous/json-map/issues"
+    "url": "https://github.com/karmaniverous/jsonmap/issues"
   },
   "description": "A hyper-generic JSON mapping library.",
-  "homepage": "https://github.com/karmaniverous/json-map#readme",
+  "homepage": "https://github.com/karmaniverous/jsonmap#readme",
   "keywords": [
     "json",
     "map",

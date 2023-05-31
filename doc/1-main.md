@@ -5,7 +5,7 @@
 Installing `JsonMap` is easy:
 
 ```bash
-npm install @karmaniverous/json-map
+npm install @karmaniverous/jsonmap
 ```
 
 `JsonMap` is _hyper-generic_: you bring your own mapping functions, which may be async and may be combined into complex transformation logic.
@@ -90,7 +90,7 @@ Input objects can contain data of any kind, including functions. These can be ex
 Once a `JsonMap` instance is configured, it can be executed against any input. Configure & execute a `JsonMap` instance like this:
 
 ```js
-import { JsonMap } from '@karmaniverous/json-map';
+import { JsonMap } from '@karmaniverous/jsonmap';
 
 // Assumes lib & map are already defined as above.
 const jsonMap = new JsonMap(lib, map);
