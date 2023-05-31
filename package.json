@@ -1,6 +1,6 @@
 {
   "name": "@karmaniverous/json-map",
-  "version": "0.6.1",
+  "version": "0.0.0",
   "publishConfig": {
     "access": "public"
   },
