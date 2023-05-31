@@ -103,8 +103,8 @@ Once a `JsonMap` instance is configured, it can be executed against any input. C
 ```js
 import { JsonMap } from '@karmaniverous/jsonmap';
 
-// Assumes lib & map are already defined as above.
-const jsonMap = new JsonMap(lib, map);
+// Assumes map & lib are already defined as above.
+const jsonMap = new JsonMap(map, lib);
 
 // Assumes some input data object is already defined.
 const output = await jsonMap.transform(input);
@@ -122,19 +122,19 @@ JsonMap class to apply transformations to a JSON object
 **Kind**: global class  
 
 * [JsonMap](#JsonMap)
-    * [new JsonMap(lib, map)](#new_JsonMap_new)
+    * [new JsonMap([map], [lib])](#new_JsonMap_new)
     * [.transform(input)](#JsonMap+transform) ⇒ <code>object</code>
 
 <a name="new_JsonMap_new"></a>
 
-### new JsonMap(lib, map)
+### new JsonMap([map], [lib])
 Creates an instance of JsonMap.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| lib | <code>object</code> | A collection of function libraries. |
-| map | <code>object</code> | The data mapping configuration. |
+| [map] | <code>object</code> | The data mapping configuration. |
+| [lib] | <code>object</code> | A collection of function libraries. |
 
 <a name="JsonMap+transform"></a>
 

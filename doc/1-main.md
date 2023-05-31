@@ -103,8 +103,8 @@ Once a `JsonMap` instance is configured, it can be executed against any input. C
 ```js
 import { JsonMap } from '@karmaniverous/jsonmap';
 
-// Assumes lib & map are already defined as above.
-const jsonMap = new JsonMap(lib, map);
+// Assumes map & lib are already defined as above.
+const jsonMap = new JsonMap(map, lib);
 
 // Assumes some input data object is already defined.
 const output = await jsonMap.transform(input);
