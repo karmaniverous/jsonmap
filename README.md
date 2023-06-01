@@ -46,6 +46,9 @@ const map = {
   bar: [
     {
       static: 'another static value',
+      // Keys starting with $ are available for progressive transformations but
+      // are not passed to the output object.
+      $remove: 'this should be removed from the output',
       // Value defined by a mapping rule expressing an array of transformation
       // objects. If there is only a single transformation object, no array is
       // necessary. The output of the last transformation step is returned as
@@ -87,6 +90,7 @@ const map = {
       params: '$.output.bar[0].static',
     },
   },
+  $remove: 'this should be removed from the output',
 };
 ```
 

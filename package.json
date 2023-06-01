@@ -23,14 +23,16 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "lodash.castarray": "^4.4.0",
+    "lodash.clonedeepwith": "^4.5.0",
     "lodash.get": "^4.4.2",
     "lodash.isarray": "^4.0.0",
-    "lodash.isnil": "^4.0.0",
     "lodash.isobject": "^3.0.2",
+    "lodash.isplainobject": "^4.0.6",
     "lodash.isstring": "^4.0.1",
-    "lodash.last": "^3.0.0",
-    "lodash.parseint": "^4.0.2",
-    "lodash.set": "^4.3.2"
+    "lodash.mapvalues": "^4.6.0",
+    "lodash.pickby": "^4.6.0",
+    "lodash.set": "^4.3.2",
+    "lodash.size": "^4.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
