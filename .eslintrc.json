@@ -22,7 +22,7 @@
   },
   "plugins": ["mocha", "promise"],
   "rules": {
-    "jsdoc/check-tag-names": "off",
+    "jsdoc/tag-lines": "off",
     "mocha/no-top-level-hooks": "off"
   },
   "settings": { "jsdoc": { "mode": "permissive" } }
