@@ -35,26 +35,26 @@
     "lodash.size": "^4.2.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.21.0",
-    "@babel/core": "^7.21.3",
-    "@babel/eslint-parser": "^7.21.3",
+    "@babel/cli": "^7.21.5",
+    "@babel/core": "^7.22.1",
+    "@babel/eslint-parser": "^7.21.8",
     "@babel/plugin-syntax-import-assertions": "^7.20.0",
-    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-env": "^7.22.4",
     "@babel/register": "^7.21.0",
-    "@karmaniverous/get-dotenv": "^1.0.0",
-    "@types/node": "^18.15.5",
+    "@karmaniverous/get-dotenv": "^2.4.1",
+    "@types/node": "^20.2.5",
     "chai": "^4.3.7",
     "concat-md": "^0.5.1",
-    "eslint": "^8.36.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-jsdoc": "^40.1.0",
+    "eslint": "^8.41.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-jsdoc": "^46.1.0",
     "eslint-plugin-mocha": "^10.1.0",
     "jsdoc-to-markdown": "^8.0.0",
     "lodash": "^4.17.21",
     "mocha": "^10.2.0",
     "numeral": "^2.0.6",
-    "prettier": "^2.8.5",
-    "release-it": "^15.9.0"
+    "prettier": "^2.8.8",
+    "release-it": "^15.10.3"
   },
   "exports": {
     ".": {
@@ -86,8 +86,8 @@
     "build": "babel lib -d dist/default/lib --delete-dir-on-start --config-file ./dist/default/.babelrc",
     "doc": "jsdoc2md -c doc/jsdoc.config.json -f lib/**/*.* -t doc/api-template.hbs > doc/2-api.jsdoc2.md && concat-md doc --hide-anchor-links > README.md",
     "lint": "eslint lib/**",
-    "package": "npm run lint && npm run test && npm run build && npm run doc",
-    "release": "npm run package && getdotenv -- release-it",
+    "prerelease": "npm run lint && npm run test && npm run build && npm run doc",
+    "release": "release-it",
     "test": "getdotenv -c \"mocha\" -p ./ ./env -d dev -y ./env/dynamic.js"
   },
   "type": "module"
