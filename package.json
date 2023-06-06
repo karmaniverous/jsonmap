@@ -25,6 +25,7 @@
     "lodash.castarray": "^4.4.0",
     "lodash.clonedeepwith": "^4.5.0",
     "lodash.get": "^4.4.2",
+    "lodash.invoke": "^4.5.2",
     "lodash.isarray": "^4.0.0",
     "lodash.isobject": "^3.0.2",
     "lodash.isplainobject": "^4.0.6",

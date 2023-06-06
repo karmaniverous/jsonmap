@@ -56,10 +56,9 @@ const map = {
       dynamic: {
         $: [
           // Each transformation object uses a special syntax to reference an
-          // object, a method to run on it, and an array of parameters to pass.
+          // a method to run and an array of parameters to pass to it.
           {
-            object: '$.lib._',
-            method: 'get',
+            method: '$.lib._.get',
             params: ['$.input', 'dynamodb.NewImage.roundup.N'],
           },
           // The special syntax uses lodash-style paths. Its root object can
@@ -67,14 +66,12 @@ const map = {
           // ($.input...), the output generated so far ($.output...), or the
           // outputs of previous transformation steps ($.[0]..., $.[1]...).
           {
-            object: '$.lib',
-            method: 'numeral',
+            method: '$.lib.numeral',
             // If there is only a single param, no array is necessary.
             params: '$[0]',
           },
           {
-            object: '$[0]',
-            method: 'format',
+            method: '$[0].format',
             params: '$0,0.00',
           },
         ],
@@ -85,8 +82,7 @@ const map = {
   // previous output of the same mapping object.
   progressive: {
     $: {
-      object: '$.lib._',
-      method: 'toUpper',
+      method: '$.lib._.toUpper',
       params: '$.output.bar[0].static',
     },
   },
