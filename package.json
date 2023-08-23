@@ -44,6 +44,7 @@
     "@babel/register": "^7.22.5",
     "@karmaniverous/get-dotenv": "^3.1.13",
     "@types/node": "^20.5.3",
+    "auto-changelog": "^2.4.0",
     "chai": "^4.3.7",
     "concat-md": "^0.5.1",
     "eslint": "^8.47.0",
@@ -76,8 +77,26 @@
     "spec": "./**/*.test.!(*.*)"
   },
   "release-it": {
+    "git": {
+      "changelog": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/main/templates/changelog-compact.hbs",
+      "requireBranch": "main",
+      "commitMessage": "chore: release v${version}"
+    },
     "github": {
       "release": true
+    },
+    "hooks": {
+      "after:init": [
+        "nr lint",
+        "nr test",
+        "nr build",
+        "nr doc"
+      ],
+      "after:release": [
+        "git switch -c release/${version}",
+        "git push -u origin release/${version}",
+        "git switch main"
+      ]
     },
     "npm": {
       "publish": true
@@ -89,7 +108,7 @@
     "lint": "eslint lib/**",
     "prerelease": "npm run lint && npm run test && npm run build && npm run doc",
     "release": "release-it",
-    "test": "getdotenv -c \"mocha\" -p ./ ./env -d dev -y ./env/dynamic.js"
+    "test": "getdotenv -c \"mocha\""
   },
   "type": "module"
 }
