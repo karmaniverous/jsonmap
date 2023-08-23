@@ -107,7 +107,7 @@
     "doc": "jsdoc2md -c doc/jsdoc.config.json -f lib/**/*.* -t doc/api-template.hbs > doc/2-api.jsdoc2.md && concat-md doc --hide-anchor-links > README.md",
     "lint": "eslint lib/**",
     "prerelease": "npm run lint && npm run test && npm run build && npm run doc",
-    "release": "release-it",
+    "release": "getdotenv -c \"release-it\"",
     "test": "getdotenv -c \"mocha\""
   },
   "type": "module"
