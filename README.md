@@ -122,20 +122,22 @@ JsonMap class to apply transformations to a JSON object
 **Kind**: global class  
 
 * [JsonMap](#JsonMap)
-    * [new JsonMap([map], [lib], [ignore])](#new_JsonMap_new)
+    * [new JsonMap([map], [lib], [options])](#new_JsonMap_new)
     * [.transform(input)](#JsonMap+transform) ⇒ <code>object</code>
 
 <a name="new_JsonMap_new"></a>
 
-### new JsonMap([map], [lib], [ignore])
+### new JsonMap([map], [lib], [options])
 Creates an instance of JsonMap.
 
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| [map] | <code>object</code> |  | The data mapping configuration. |
-| [lib] | <code>object</code> |  | A collection of function libraries. |
-| [ignore] | <code>string</code> | <code>&quot;^\\$&quot;</code> | Regex pattern of keys to ignore. Defaults to '^\\$'. |
+| Param | Type | Description |
+| --- | --- | --- |
+| [map] | <code>object</code> | The data mapping configuration. |
+| [lib] | <code>object</code> | A collection of function libraries. |
+| [options] | <code>object</code> | Options object |
+| [options.ignore] | <code>string</code> | Regex pattern of keys to ignore. Defaults to '^\\$'. |
+| [options.logger] | <code>string</code> | Logger object |
 
 <a name="JsonMap+transform"></a>
 
