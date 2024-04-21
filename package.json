@@ -1,84 +1,72 @@
 {
-  "name": "@karmaniverous/jsonmap",
-  "version": "1.0.1",
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/karmaniverous/jsonmap"
-  },
   "author": "Jason G. Williscroft",
   "bugs": {
     "url": "https://github.com/karmaniverous/jsonmap/issues"
   },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "nanoid": "^5.0.6",
+    "zod": "^3.22.4"
+  },
   "description": "A hyper-generic JSON mapping library.",
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/chai": "^4.3.14",
+    "@types/eslint__js": "^8.42.3",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@types/eslint-plugin-mocha": "^10.4.0",
+    "@types/lodash": "^4.17.0",
+    "@types/mocha": "^10.0.6",
+    "@types/numeral": "^2.0.5",
+    "auto-changelog": "^2.4.0",
+    "chai": "^5.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-mocha": "^10.4.2",
+    "eslint-plugin-simple-import-sort": "^12.0.0",
+    "jsdom-global": "^3.0.2",
+    "lefthook": "^1.6.10",
+    "mocha": "^10.4.0",
+    "numeral": "^2.0.6",
+    "nyc": "^15.1.0",
+    "prettier": "^3.2.5",
+    "release-it": "^17.2.0",
+    "rimraf": "^5.0.5",
+    "rollup": "^4.14.2",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.6.0"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "homepage": "https://github.com/karmaniverous/jsonmap#readme",
   "keywords": [
     "json",
     "map",
-    "es6",
-    "javascript"
+    "typescript"
   ],
   "license": "BSD-3-Clause",
-  "dependencies": {
-    "lodash.castarray": "^4.4.0",
-    "lodash.clonedeepwith": "^4.5.0",
-    "lodash.get": "^4.4.2",
-    "lodash.invoke": "^4.5.2",
-    "lodash.isarray": "^4.0.0",
-    "lodash.isarraylikeobject": "^4.2.0",
-    "lodash.isobject": "^3.0.2",
-    "lodash.isplainobject": "^4.0.6",
-    "lodash.isstring": "^4.0.1",
-    "lodash.isundefined": "^3.0.1",
-    "lodash.mapvalues": "^4.6.0",
-    "lodash.pickby": "^4.6.0",
-    "lodash.set": "^4.3.2",
-    "lodash.size": "^4.2.0",
-    "lodash.sortby": "^4.7.0",
-    "nanoid": "^5.0.6"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.24.1",
-    "@babel/core": "^7.24.3",
-    "@babel/eslint-parser": "^7.24.1",
-    "@babel/plugin-syntax-import-assertions": "^7.24.1",
-    "@babel/preset-env": "^7.24.3",
-    "@babel/register": "^7.23.7",
-    "@karmaniverous/get-dotenv": "^3.1.19",
-    "@types/node": "^20.11.30",
-    "auto-changelog": "^2.4.0",
-    "chai": "^5.1.0",
-    "concat-md": "^0.5.1",
-    "eslint": "^8.57.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-jsdoc": "^48.2.1",
-    "eslint-plugin-mocha": "^10.4.1",
-    "jsdoc-to-markdown": "^8.0.1",
-    "lodash": "^4.17.21",
-    "mocha": "^10.4.0",
-    "numeral": "^2.0.6",
-    "prettier": "^3.2.5",
-    "release-it": "^17.1.1"
-  },
-  "exports": {
-    ".": {
-      "import": "./lib/index.js",
-      "require": "./dist/default/lib/index.js"
-    }
-  },
-  "main": "./lib/index.js",
-  "mocha": {
-    "exclude": [
-      "./dist/**",
-      "./node_modules/**"
-    ],
-    "file": "./test/setup.js",
-    "require": [
-      "@babel/register"
-    ],
-    "spec": "./**/*.test.!(*.*)"
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "name": "@karmaniverous/jsonmap",
+  "publishConfig": {
+    "access": "public"
   },
   "release-it": {
     "git": {
@@ -91,10 +79,9 @@
     },
     "hooks": {
       "after:init": [
-        "nr lint",
-        "nr test",
-        "nr build",
-        "nr doc"
+        "npm run lint",
+        "npm run test",
+        "npm run build"
       ],
       "after:release": [
         "git switch -c release/${version}",
@@ -106,13 +93,18 @@
       "publish": true
     }
   },
-  "scripts": {
-    "build": "babel lib -d dist/default/lib --delete-dir-on-start --config-file ./dist/default/.babelrc",
-    "doc": "jsdoc2md -c doc/jsdoc.config.json -f lib/**/*.* -t doc/api-template.hbs > doc/2-api.jsdoc2.md && concat-md doc --hide-anchor-links > README.md",
-    "lint": "eslint lib/**",
-    "prerelease": "npm run lint && npm run test && npm run build && npm run doc",
-    "release": "getdotenv -c \"release-it\"",
-    "test": "getdotenv -c \"mocha\""
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karmaniverous/jsonmap"
   },
-  "type": "module"
+  "scripts": {
+    "build": "rimraf dist && rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
+    "lint": "eslint src/** && prettier -c src",
+    "lint:fix": "eslint --fix src/** && prettier --write src",
+    "release": "release-it",
+    "test": "nyc mocha"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.1"
 }

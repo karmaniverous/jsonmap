@@ -1,11 +1,10 @@
-/* eslint-env mocha */
-
 // npm imports
 import { expect } from 'chai';
 import _ from 'lodash';
 import numeral from 'numeral';
-import { JsonMap } from '../index.js';
 import { setTimeout } from 'timers/promises';
+
+import { JsonMap } from './index.js';
 
 const lib = { _, numeral, setTimeout };
 
@@ -242,10 +241,10 @@ describe('JsonMap', function () {
         },
       };
 
-      const { distId } = await new JsonMap(
+      const { distId } = (await new JsonMap(
         { distId: distIdMap },
-        lib
-      ).transform(input);
+        lib,
+      ).transform(input)) as { distId: unknown };
 
       expect(distId).to.equal('adKUH6fY9NVI3pwVDlyvu');
     });

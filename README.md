@@ -39,7 +39,7 @@ The `map` object is a [POJO](https://masteringjs.io/tutorials/fundamentals/pojo)
 
 The transformation output will reflect the structure of your `map` object and include any static values. To add mapping logic, use a structured value that consists of an object with a single `$` key, like this:
 
-```js
+```ts
 const map = {
   foo: 'static value passed directly to output',
   // Structure passed directly to output.
@@ -111,46 +111,6 @@ const output = await jsonMap.transform(input);
 ```
 
 The [unit tests](https://github.com/karmaniverous/jsonmap/blob/main/lib/JsonMap/JsonMap.test.js) demonstrate this example in action.
-
-# API Documentation
-
-<a name="JsonMap"></a>
-
-## JsonMap
-JsonMap class to apply transformations to a JSON object
-
-**Kind**: global class  
-
-* [JsonMap](#JsonMap)
-    * [new JsonMap([map], [lib], [options])](#new_JsonMap_new)
-    * [.transform(input)](#JsonMap+transform) ⇒ <code>object</code>
-
-<a name="new_JsonMap_new"></a>
-
-### new JsonMap([map], [lib], [options])
-Creates an instance of JsonMap.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [map] | <code>object</code> | The data mapping configuration. |
-| [lib] | <code>object</code> | A collection of function libraries. |
-| [options] | <code>object</code> | Options object |
-| [options.ignore] | <code>string</code> | Regex pattern of keys to ignore. Defaults to '^\\$'. |
-| [options.logger] | <code>string</code> | Logger object |
-
-<a name="JsonMap+transform"></a>
-
-### jsonMap.transform(input) ⇒ <code>object</code>
-Transforms the input data according to the map configuration.
-
-**Kind**: instance method of [<code>JsonMap</code>](#JsonMap)  
-**Returns**: <code>object</code> - - The transformed data.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| input | <code>object</code> | The input data to be transformed. |
-
 
 ---
 
