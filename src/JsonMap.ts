@@ -1,17 +1,19 @@
 import _ from 'lodash';
 import { nanoid } from 'nanoid';
 
-import {
+import type {
   Json,
+  JsonFn,
   JsonMapLib,
   JsonMapMap,
+  JsonMapOptions,
   JsonMapTransform,
   PathResolutionMap,
   PathResolutionParams,
 } from './types';
+import { logger } from './util/logger';
 
-type JsonFn = (this: unknown, key: string, value: unknown) => unknown;
-
+// The transformation process leverages JSON.stringify and JSON.parse to eliminate circular references.
 const getJsonFns = () => {
   const seen = new WeakSet();
   const undefinedToken = nanoid();
@@ -41,27 +43,20 @@ const getJsonFns = () => {
   return { replacer, reviver };
 };
 
-interface JsonMapOptions {
-  ignore?: string | RegExp;
-  logger?: typeof console;
-}
-
 /**
  * JsonMap class to apply transformations to a JSON object
  */
 class JsonMap {
   private ignore: RegExp;
   private input: Json | undefined;
-  private logger: typeof console;
   private output: Json | undefined;
 
   constructor(
     private map: JsonMapMap = {},
     private lib: JsonMapLib = {},
-    { ignore = /^\$/, logger = console }: JsonMapOptions = {},
+    { ignore = /^\$/ }: JsonMapOptions = {},
   ) {
     this.ignore = _.isString(ignore) ? new RegExp(ignore) : ignore;
-    this.logger = logger;
   }
 
   /**
@@ -104,7 +99,7 @@ class JsonMap {
     output: Json,
     path = '',
   ): Promise<Json> {
-    this.logger.debug('#transform params:\n', { node, input, output, path });
+    logger.debug('#transform params:\n', { node, input, output, path });
 
     // Checks if the current node is an object and has only a '$' key
     if (node instanceof Object && _.size(node) === 1 && '$' in node) {
@@ -112,14 +107,14 @@ class JsonMap {
       const transformations = _.castArray(
         node.$ as JsonMapTransform | JsonMapTransform[],
       );
-      this.logger.debug('transformations:\n', transformations);
+      logger.debug('transformations:\n', transformations);
 
       // Array to store the results of the transformations
       const results: Json = [];
 
       // Iterates over each transformation
       for (const transformation of transformations) {
-        this.logger.debug('processing transformation:\n', transformation);
+        logger.debug('processing transformation:\n', transformation);
 
         // Resolves the object path for the transformation
         const { obj: methodObj, path: methodPath } = this.#resolvePath(
@@ -143,7 +138,7 @@ class JsonMap {
           },
         );
 
-        this.logger.debug('resolved transformation params:\n', params);
+        logger.debug('resolved transformation params:\n', params);
 
         // Calls the specified method on the resolved object with the resolved parameters
         const result = (await _.invoke(
@@ -152,7 +147,7 @@ class JsonMap {
           ...params,
         )) as Json;
 
-        this.logger.debug('transformation result:\n', result);
+        logger.debug('transformation result:\n', result);
 
         // Stores the result of the transformation
         results.unshift(result);
@@ -161,7 +156,7 @@ class JsonMap {
       // Sets the output at the specified path to the last result of the transformations & returns.
       _.set(output as object, path, results[0]);
 
-      this.logger.debug('updated output:\n', output);
+      logger.debug('updated output:\n', output);
 
       return results[0];
     }

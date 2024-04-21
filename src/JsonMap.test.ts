@@ -4,7 +4,7 @@ import _ from 'lodash';
 import numeral from 'numeral';
 import { setTimeout } from 'timers/promises';
 
-import { JsonMap } from './index.js';
+import { JsonMap } from './';
 
 const lib = { _, numeral, setTimeout };
 

@@ -1,5 +1,9 @@
 import { z } from 'zod';
 
+export interface JsonMapOptions {
+  ignore?: string | RegExp;
+}
+
 const JsonMapTransform = z
   .object({
     method: z.string(),
@@ -40,3 +44,5 @@ export type PathResolutionMap = Record<
   string,
   (x: PathResolutionParams) => { obj: unknown; path: string }
 >;
+
+export type JsonFn = (this: unknown, key: string, value: unknown) => unknown;

@@ -43,6 +43,7 @@ const config: RollupOptions[] = [
         extend: true,
         file: `${outputPath}.iife.min.js`,
         format: 'iife',
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         plugins: [terserPlugin()],
       },
     ],
@@ -63,6 +64,7 @@ const config: RollupOptions[] = [
   // Type definitions output.
   {
     ...commonInputOptions,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     plugins: [commonInputOptions.plugins, dtsPlugin()],
     output: [
       {
