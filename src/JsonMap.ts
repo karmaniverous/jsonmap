@@ -91,7 +91,6 @@ class JsonMap {
 
   /**
    * Recursive function to handle transformations.
-   * @private
    */
   async #transform(
     node: JsonMapMap,
@@ -199,7 +198,6 @@ class JsonMap {
 
   /**
    * Resolves the method/params path for a transformation
-   * @private
    */
   #resolvePath(
     path: unknown,
