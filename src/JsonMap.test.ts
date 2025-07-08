@@ -176,6 +176,46 @@ const input = {
 const jsonMap = new JsonMap(map, lib, { ignore: '^\\$(?!keep)' });
 
 describe('JsonMap', function () {
+  it('null case', async function () {
+    const nullMap = new JsonMap(null, lib);
+
+    const output = await nullMap.transform(null);
+
+    expect(output).to.deep.equal(null);
+  });
+
+  it('empty case', async function () {
+    const emptyMap = new JsonMap(
+      {
+        email: {
+          $: [
+            {
+              method: '$.lib._.get',
+              params: ['$.input', 'email'],
+            },
+          ],
+        },
+        phone: {
+          $: [
+            {
+              method: '$.lib._.get',
+              params: ['$.input', 'phone'],
+            },
+          ],
+        },
+      },
+      lib,
+    );
+
+    const output1 = await emptyMap.transform(null);
+
+    expect(output1).to.deep.equal({});
+
+    const output2 = await emptyMap.transform({ email: 'foo' });
+
+    expect(output2).to.deep.equal({ email: 'foo' });
+  });
+
   it('simple case', async function () {
     const output = await jsonMap.transform(input);
 
