@@ -1,8 +1,7 @@
-// npm imports
-import { expect } from 'chai';
 import _ from 'lodash';
 import numeral from 'numeral';
 import { setTimeout } from 'timers/promises';
+import { describe, expect, it } from 'vitest';
 
 import { JsonMap } from './';
 
@@ -10,32 +9,18 @@ const lib = { _, numeral, setTimeout };
 
 const map = {
   foo: 'static value passed directly to output',
-  // Structure passed directly to output.
   bar: [
     {
       static: 'another static value',
-      // Keys starting with $ are available for progressive transformations but
-      // are not passed to the output object.
       $remove: 'this should be removed from the output',
-      // Value defined by a mapping rule expressing an array of transformation
-      // objects. If there is only a single transformation object, no array is
-      // necessary. The output of the last transformation step is returned as
-      // the mapped value.
       dynamic: {
         $: [
-          // Each transformation object uses a special syntax to reference an
-          // a method to run and an array of parameters to pass to it.
           {
             method: '$.lib._.get',
             params: ['$.input', 'dynamodb.NewImage.roundup.N'],
           },
-          // The special syntax uses lodash-style paths. Its root object can
-          // reference the lib object ($.lib...), the transformation input
-          // ($.input...), the output generated so far ($.output...), or the
-          // outputs of previous transformation steps ($.[0]..., $.[1]...).
           {
             method: '$.lib.numeral',
-            // If there is only a single param, no array is necessary.
             params: '$[0]',
           },
           {
@@ -46,8 +31,6 @@ const map = {
       },
     },
   ],
-  // Value defined by a single mapping rule executing a method against a
-  // previous output of the same mapping object.
   progressive: {
     $: {
       method: '$.lib._.toUpper',
@@ -59,7 +42,6 @@ const map = {
     'this should NOT be removed from the output and the $ in the key should be unescaped',
 };
 
-// This is some sample input data to be transformed.
 const input = {
   eventID: 'e560bbcaee919e16a6a8ce8dc3fe97ab',
   eventName: 'MODIFY',
@@ -69,100 +51,40 @@ const input = {
   dynamodb: {
     ApproximateCreationDateTime: 1685071094,
     Keys: {
-      entityPK: {
-        S: 'txn!',
-      },
-      entitySK: {
-        S: 'txnId#_tQ72mu5Iy2PYJ33c497g',
-      },
+      entityPK: { S: 'txn!' },
+      entitySK: { S: 'txnId#_tQ72mu5Iy2PYJ33c497g' },
     },
     NewImage: {
-      txnUserIdPK: {
-        S: 'txn!|userId#Xmv51c7lYiiTIU22_UlCD',
-      },
-      created: {
-        N: '1685071087846',
-      },
-      netValue: {
-        N: '365.3',
-      },
-      methodId: {
-        S: 'KDvC6leEzkAAf8-akh_vO',
-      },
-      entityPK: {
-        S: 'txn!',
-      },
-      userId: {
-        S: 'Xmv51c7lYiiTIU22_UlCD',
-      },
-      entitySK: {
-        S: 'txnId#_tQ72mu5Iy2PYJ33c497g',
-      },
-      updater: {
-        S: 'api-txn-v0-bali',
-      },
-      merchantId: {
-        S: 'eQMZ2ikPmUd3cqrptbpna',
-      },
-      roundup: {
-        N: '0.7',
-      },
-      txnMerchantIdPK: {
-        S: 'txn!|merchantId#eQMZ2ikPmUd3cqrptbpna',
-      },
-      updated: {
-        N: '1685071094685',
-      },
-      txnId: {
-        S: '_tQ72mu5Iy2PYJ33c497g',
-      },
-      txnMethodIdPK: {
-        S: 'txn!|methodId#KDvC6leEzkAAf8-akh_vO',
-      },
+      txnUserIdPK: { S: 'txn!|userId#Xmv51c7lYiiTIU22_UlCD' },
+      created: { N: '1685071087846' },
+      netValue: { N: '365.3' },
+      methodId: { S: 'KDvC6leEzkAAf8-akh_vO' },
+      entityPK: { S: 'txn!' },
+      userId: { S: 'Xmv51c7lYiiTIU22_UlCD' },
+      entitySK: { S: 'txnId#_tQ72mu5Iy2PYJ33c497g' },
+      updater: { S: 'api-txn-v0-bali' },
+      merchantId: { S: 'eQMZ2ikPmUd3cqrptbpna' },
+      roundup: { N: '0.7' },
+      txnMerchantIdPK: { S: 'txn!|merchantId#eQMZ2ikPmUd3cqrptbpna' },
+      updated: { N: '1685071094685' },
+      txnId: { S: '_tQ72mu5Iy2PYJ33c497g' },
+      txnMethodIdPK: { S: 'txn!|methodId#KDvC6leEzkAAf8-akh_vO' },
     },
     OldImage: {
-      txnUserIdPK: {
-        S: 'txn!|userId#Xmv51c7lYiiTIU22_UlCD',
-      },
-      created: {
-        N: '1685071087846',
-      },
-      netValue: {
-        N: '429.74',
-      },
-      methodId: {
-        S: 'KDvC6leEzkAAf8-akh_vO',
-      },
-      entityPK: {
-        S: 'txn!',
-      },
-      userId: {
-        S: 'Xmv51c7lYiiTIU22_UlCD',
-      },
-      entitySK: {
-        S: 'txnId#_tQ72mu5Iy2PYJ33c497g',
-      },
-      updater: {
-        S: 'api-txn-v0-bali',
-      },
-      merchantId: {
-        S: 'eQMZ2ikPmUd3cqrptbpna',
-      },
-      roundup: {
-        N: '0.26',
-      },
-      txnMerchantIdPK: {
-        S: 'txn!|merchantId#eQMZ2ikPmUd3cqrptbpna',
-      },
-      updated: {
-        N: '1685071087846',
-      },
-      txnId: {
-        S: '_tQ72mu5Iy2PYJ33c497g',
-      },
-      txnMethodIdPK: {
-        S: 'txn!|methodId#KDvC6leEzkAAf8-akh_vO',
-      },
+      txnUserIdPK: { S: 'txn!|userId#Xmv51c7lYiiTIU22_UlCD' },
+      created: { N: '1685071087846' },
+      netValue: { N: '429.74' },
+      methodId: { S: 'KDvC6leEzkAAf8-akh_vO' },
+      entityPK: { S: 'txn!' },
+      userId: { S: 'Xmv51c7lYiiTIU22_UlCD' },
+      entitySK: { S: 'txnId#_tQ72mu5Iy2PYJ33c497g' },
+      updater: { S: 'api-txn-v0-bali' },
+      merchantId: { S: 'eQMZ2ikPmUd3cqrptbpna' },
+      roundup: { N: '0.26' },
+      txnMerchantIdPK: { S: 'txn!|merchantId#eQMZ2ikPmUd3cqrptbpna' },
+      updated: { N: '1685071087846' },
+      txnId: { S: '_tQ72mu5Iy2PYJ33c497g' },
+      txnMethodIdPK: { S: 'txn!|methodId#KDvC6leEzkAAf8-akh_vO' },
     },
     SequenceNumber: '31120900000000039175922358',
     SizeBytes: 801,
@@ -172,60 +94,40 @@ const input = {
     'arn:aws:dynamodb:us-east-1:*:table/*/stream/2023-05-19T12:57:41.682',
 };
 
-// This initializes a JsonMap instance.
 const jsonMap = new JsonMap(map, lib, { ignore: '^\\$(?!keep)' });
 
-describe('JsonMap', function () {
-  it('null case', async function () {
+describe('JsonMap', () => {
+  it('null case', async () => {
     const nullMap = new JsonMap(null, lib);
-
     const output = await nullMap.transform(null);
-
-    expect(output).to.deep.equal(null);
+    expect(output).toBeNull();
   });
 
-  it('empty case', async function () {
+  it('empty case', async () => {
     const emptyMap = new JsonMap(
       {
         email: {
-          $: [
-            {
-              method: '$.lib._.get',
-              params: ['$.input', 'email'],
-            },
-          ],
+          $: [{ method: '$.lib._.get', params: ['$.input', 'email'] }],
         },
         phone: {
-          $: [
-            {
-              method: '$.lib._.get',
-              params: ['$.input', 'phone'],
-            },
-          ],
+          $: [{ method: '$.lib._.get', params: ['$.input', 'phone'] }],
         },
       },
       lib,
     );
 
     const output1 = await emptyMap.transform(null);
-
-    expect(output1).to.deep.equal({});
+    expect(output1).toEqual({});
 
     const output2 = await emptyMap.transform({ email: 'foo' });
-
-    expect(output2).to.deep.equal({ email: 'foo' });
+    expect(output2).toEqual({ email: 'foo' });
   });
 
-  it('simple case', async function () {
+  it('simple case', async () => {
     const output = await jsonMap.transform(input);
 
-    expect(output).to.deep.equal({
-      bar: [
-        {
-          dynamic: '$0.70',
-          static: 'another static value',
-        },
-      ],
+    expect(output).toEqual({
+      bar: [{ dynamic: '$0.70', static: 'another static value' }],
       foo: 'static value passed directly to output',
       progressive: 'ANOTHER STATIC VALUE',
       $keep:
@@ -233,8 +135,8 @@ describe('JsonMap', function () {
     });
   });
 
-  describe('real-world', function () {
-    const input = {
+  describe('real-world', () => {
+    const rwInput = {
       eventID: 'e6f852335291638bc6d7694fd6cd6d43',
       eventName: 'INSERT',
       eventVersion: '1.1',
@@ -273,7 +175,7 @@ describe('JsonMap', function () {
         'arn:aws:dynamodb:us-east-1:546652796775:table/api-txn-v0-bali/stream/2023-07-07T12:46:31.959',
     };
 
-    it('distIdMap', async function () {
+    it('distIdMap', async () => {
       const distIdMap = {
         $: {
           method: '$.lib._.get',
@@ -284,12 +186,12 @@ describe('JsonMap', function () {
       const { distId } = (await new JsonMap(
         { distId: distIdMap },
         lib,
-      ).transform(input)) as { distId: unknown };
+      ).transform(rwInput)) as { distId: unknown };
 
-      expect(distId).to.equal('adKUH6fY9NVI3pwVDlyvu');
+      expect(distId).toBe('adKUH6fY9NVI3pwVDlyvu');
     });
 
-    it('$ properties', async function () {
+    it('$ properties', async () => {
       const sourceMap = {
         $privateGetMerchantParams: {
           merchantId: {
@@ -331,9 +233,9 @@ describe('JsonMap', function () {
         },
       };
 
-      const output = await new JsonMap(sourceMap, lib).transform(input);
+      const output = await new JsonMap(sourceMap, lib).transform(rwInput);
 
-      expect(output).to.deep.equal({
+      expect(output).toEqual({
         merchant: { displayName: 'Test Merchant' },
       });
     });
