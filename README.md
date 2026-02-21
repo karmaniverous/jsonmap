@@ -288,5 +288,4 @@ All types are derived from their Zod schemas via `z.infer<>`:
 
 ---
 
-See more great templates and other tools on
-[my GitHub Profile](https://github.com/karmaniverous)!
+Built for you with ❤️ on Bali! Find more great tools & templates on [my GitHub Profile](https://github.com/karmaniverous).
