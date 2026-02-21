@@ -112,6 +112,78 @@ const output = await jsonMap.transform(input);
 
 The [unit tests](https://github.com/karmaniverous/jsonmap/blob/main/lib/JsonMap/JsonMap.test.js) demonstrate this example in action.
 
+## JSON Schema & Zod Schemas
+
+This package exports [Zod](https://zod.dev/) schemas as the source of truth for all map-related types, plus a generated [JSON Schema](https://json-schema.org/) file for editor tooling and cross-language validation.
+
+### IDE autocomplete for config files
+
+Point your JSON map config file at the published schema to get autocomplete and validation in VS Code, JetBrains, and other JSON Schema–aware editors:
+
+```json
+{
+  "$schema": "node_modules/@karmaniverous/jsonmap/jsonmap.schema.json",
+  "foo": "static value",
+  "bar": {
+    "$": {
+      "method": "$.lib._.get",
+      "params": ["$.input", "some.path"]
+    }
+  }
+}
+```
+
+### Referencing the schema from other JSON Schema files
+
+Use `$ref` to compose the JsonMap schema into your own:
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "mappings": {
+      "$ref": "node_modules/@karmaniverous/jsonmap/jsonmap.schema.json"
+    }
+  }
+}
+```
+
+### Composing the Zod schemas in TypeScript
+
+Import the exported Zod schemas to build on top of them in your own validation logic:
+
+```ts
+import { z } from 'zod';
+import {
+  jsonMapMapSchema,
+  jsonMapTransformSchema,
+  jsonMapDynamicSchema,
+  jsonMapOptionsSchema,
+} from '@karmaniverous/jsonmap';
+
+// Extend with your own config shape
+const myConfigSchema = z.object({
+  name: z.string(),
+  map: jsonMapMapSchema,
+  options: jsonMapOptionsSchema.optional(),
+});
+
+type MyConfig = z.infer<typeof myConfigSchema>;
+
+// Validate at runtime
+const config = myConfigSchema.parse(untrustedInput);
+```
+
+Available schemas:
+
+| Schema | Describes |
+| --- | --- |
+| `jsonMapTransformSchema` | A single `{ method, params }` transform step |
+| `jsonMapDynamicSchema` | A `{ $: ... }` dynamic value node |
+| `jsonMapMapSchema` | A full recursive map definition (literals, objects, arrays) |
+| `jsonMapOptionsSchema` | Constructor options (`{ ignore?: string \| RegExp }`) |
+
 ---
 
 See more great templates and other tools on
