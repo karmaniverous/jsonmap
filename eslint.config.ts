@@ -64,8 +64,6 @@ export default [
     rules: {
       ...strictTypeCheckedRules,
       '@typescript-eslint/consistent-type-imports': 'error',
-      '@typescript-eslint/no-non-null-assertion': 'off',
-      '@typescript-eslint/no-unused-expressions': 'off',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'error',
       'simple-import-sort/imports': 'error',
