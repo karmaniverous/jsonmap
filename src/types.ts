@@ -2,7 +2,7 @@
  * Type definitions and Zod schemas for JsonMap.
  *
  * @remarks
- * All Zod schemas are the source of truth; TypeScript types are derived via {@link z.infer}.
+ * All Zod schemas are the source of truth; TypeScript types are derived via `z.infer<>`.
  *
  */
 
@@ -51,23 +51,6 @@ export type JsonMapLib =
   { [key: string]: JsonMapLib | ((x: any) => any) } | JsonMapLib[];
 
 /**
- * Schema for a recursive JsonMap map definition.
- *
- * @remarks
- * A map node is either a JSON literal, an array of map nodes, or an object
- * whose values are map nodes or {@link JsonMapDynamic} nodes.
- */
-export const jsonMapMapSchema: z.ZodType<
-  Literal | Record<string, unknown> | unknown[]
-> = z.lazy(() =>
-  z.union([
-    literalSchema,
-    z.record(z.string(), z.union([jsonMapMapSchema, jsonMapDynamicSchema])),
-    z.array(jsonMapMapSchema),
-  ]),
-);
-
-/**
  * A recursive JsonMap map definition.
  *
  * @remarks
@@ -80,10 +63,35 @@ export type JsonMapMap =
   | JsonMapMap[];
 
 /**
+ * Schema for a recursive JsonMap map definition.
+ *
+ * @remarks
+ * A map node is either a JSON literal, an array of map nodes, or an object
+ * whose values are map nodes or {@link JsonMapDynamic} nodes.
+ */
+export const jsonMapMapSchema: z.ZodType<JsonMapMap> = z.lazy(() =>
+  z.union([
+    literalSchema,
+    z.record(z.string(), z.union([jsonMapMapSchema, jsonMapDynamicSchema])),
+    z.array(jsonMapMapSchema),
+  ]),
+);
+
+/**
  * Schema for JsonMap constructor options.
+ *
+ * @remarks
+ * The `ignore` field accepts a string or RegExp. The RegExp branch uses
+ * `z.custom` and cannot be faithfully represented in standard JSON Schema.
+ * JSON Schema consumers should treat this field as a string pattern.
  */
 export const jsonMapOptionsSchema = z.object({
-  ignore: z.union([z.string(), z.instanceof(RegExp)]).optional(),
+  ignore: z
+    .union([
+      z.string(),
+      z.custom<RegExp>((val) => val instanceof RegExp, 'Expected a RegExp'),
+    ])
+    .optional(),
 });
 
 /** Options passed to the {@link JsonMap} constructor. */
