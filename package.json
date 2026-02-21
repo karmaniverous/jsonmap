@@ -19,6 +19,7 @@
     "@types/lodash": "^4.17.23",
     "@types/numeral": "^2.0.5",
     "@vitest/eslint-plugin": "^1.6.9",
+    "cross-env": "^10.1.0",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
@@ -98,7 +99,7 @@
     "url": "https://github.com/karmaniverous/jsonmap"
   },
   "scripts": {
-    "build": "rimraf dist && rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript && npm run generate:schema",
+    "build": "rimraf dist && cross-env NO_COLOR=1 rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript && npm run generate:schema",
     "generate:schema": "tsx scripts/generate-json-schema.ts",
     "knip": "knip",
     "lint": "eslint .",
