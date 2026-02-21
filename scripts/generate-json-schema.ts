@@ -9,7 +9,7 @@ import { writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { z } from 'zod';
 
-import { jsonMapMapSchema } from '../src/types.ts';
+import { jsonMapMapSchema } from '../src/types.js';
 
 const jsonSchema = z.toJSONSchema(jsonMapMapSchema, {
   unrepresentable: 'any',
