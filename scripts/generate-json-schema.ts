@@ -3,8 +3,6 @@
  *
  * @remarks
  * Run via the `generate:schema` npm script.
- *
- * @module
  */
 
 import { writeFileSync } from 'fs';
