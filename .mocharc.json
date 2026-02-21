@@ -17,5 +17,5 @@
     "jsdom-global",
     "source-map-support"
   ],
-  "spec": "./**/*.test.!(*.*)"
+  "spec": "./src/**/*.test.ts"
 }
