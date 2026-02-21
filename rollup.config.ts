@@ -9,18 +9,38 @@ import dtsPlugin from 'rollup-plugin-dts';
 
 const outputPath = `dist`;
 
+// Rollup writes bundle outputs; the TS plugin should only transpile.
+// - outputToFilesystem=false avoids outDir/dir validation errors for multi-output builds.
+// - incremental=false avoids TS build-info state referencing transient Rollup config artifacts.
+const typescript = typescriptPlugin({
+  tsconfig: './tsconfig.json',
+  outputToFilesystem: false,
+  // Only compile bundled sources; prevents transient Rollup config artifacts
+  // (e.g. rollup.config-*.mjs) from being pulled into the TS program.
+  include: ['src/**/*.ts'],
+  exclude: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**'],
+
+  // Override repo tsconfig settings for bundling.
+  noEmit: false,
+  declaration: false,
+  declarationMap: false,
+  incremental: false,
+  allowJs: false,
+  checkJs: false,
+});
+
 const commonPlugins = [
   commonjsPlugin(),
   jsonPlugin(),
   nodeResolve(),
-  typescriptPlugin(),
+  typescript,
 ];
 
 const commonAliases: Alias[] = [];
 
 const commonInputOptions: InputOptions = {
   input: 'src/index.ts',
-  plugins: [aliasPlugin({ entries: commonAliases }), commonPlugins],
+  plugins: [aliasPlugin({ entries: commonAliases }), ...commonPlugins],
 };
 
 const config: RollupOptions[] = [
@@ -50,8 +70,7 @@ const config: RollupOptions[] = [
 
   // Type definitions output.
   {
-    ...commonInputOptions,
-    plugins: [commonInputOptions.plugins, dtsPlugin()],
+    input: 'src/index.ts',
     output: [
       {
         extend: true,
@@ -69,6 +88,7 @@ const config: RollupOptions[] = [
         format: 'cjs',
       },
     ],
+    plugins: [dtsPlugin()],
   },
 ];
 
