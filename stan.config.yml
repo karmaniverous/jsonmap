@@ -1,0 +1,22 @@
+stan-core:
+  stanPath: .stan
+  excludes:
+    - package-lock.json
+  includes: []
+stan-cli:
+  cliDefaults:
+    run:
+      facets: false
+      plan: false
+      sequential: true
+  patchOpenCommand: code -g {file}
+  scripts:
+    typecheck: npm run typecheck -- --noErrorTruncation
+    lint:
+      script: npm run lint:fix
+      warnPattern: \\d+:\\d+\\s+warning
+    test: npm run test -- --no-color
+    build: npm run build
+    knip:
+      script: npm run knip
+      warnPattern: hints

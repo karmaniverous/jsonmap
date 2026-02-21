@@ -6,3 +6,6 @@ coverage/
 dist/
 esm/
 node_modules/
+# STAN
+.stan/output/
+.stan/system/

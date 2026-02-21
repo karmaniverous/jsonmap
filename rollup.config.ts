@@ -1,9 +1,10 @@
-import aliasPlugin, { Alias } from '@rollup/plugin-alias';
+import type { Alias } from '@rollup/plugin-alias';
+import aliasPlugin from '@rollup/plugin-alias';
 import commonjsPlugin from '@rollup/plugin-commonjs';
 import jsonPlugin from '@rollup/plugin-json';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescriptPlugin from '@rollup/plugin-typescript';
-import type { InputOptions, OutputOptions, RollupOptions } from 'rollup';
+import type { InputOptions, RollupOptions } from 'rollup';
 import dtsPlugin from 'rollup-plugin-dts';
 
 const outputPath = `dist`;

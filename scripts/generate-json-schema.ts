@@ -17,11 +17,7 @@ const jsonSchema = z.toJSONSchema(jsonMapMapSchema, {
   unrepresentable: 'any',
 });
 
-const outPath = resolve(
-  import.meta.dirname ?? '.',
-  '..',
-  'jsonmap.schema.json',
-);
+const outPath = resolve(import.meta.dirname, '..', 'jsonmap.schema.json');
 
 writeFileSync(outPath, JSON.stringify(jsonSchema, null, 2) + '\n');
 
