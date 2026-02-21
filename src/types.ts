@@ -15,12 +15,10 @@ import { z } from 'zod';
  * A transform specifies a method path and one or more parameter paths
  * used during map evaluation.
  */
-export const jsonMapTransformSchema = z
-  .object({
-    method: z.string(),
-    params: z.union([z.string(), z.string().array()]),
-  })
-  .required();
+export const jsonMapTransformSchema = z.object({
+  method: z.string(),
+  params: z.union([z.string(), z.string().array()]),
+});
 
 /** A single JsonMap transformation step. */
 export type JsonMapTransform = z.infer<typeof jsonMapTransformSchema>;
@@ -32,11 +30,9 @@ export type JsonMapTransform = z.infer<typeof jsonMapTransformSchema>;
  * A dynamic node is an object whose sole key is `$`, holding one or more
  * {@link JsonMapTransform} steps.
  */
-export const jsonMapDynamicSchema = z
-  .object({
-    $: z.union([jsonMapTransformSchema, jsonMapTransformSchema.array()]),
-  })
-  .required();
+export const jsonMapDynamicSchema = z.object({
+  $: z.union([jsonMapTransformSchema, jsonMapTransformSchema.array()]),
+});
 
 /** A dynamic value node in a JsonMap. */
 export type JsonMapDynamic = z.infer<typeof jsonMapDynamicSchema>;
@@ -66,7 +62,7 @@ export const jsonMapMapSchema: z.ZodType<
 > = z.lazy(() =>
   z.union([
     literalSchema,
-    z.record(z.union([jsonMapMapSchema, jsonMapDynamicSchema])),
+    z.record(z.string(), z.union([jsonMapMapSchema, jsonMapDynamicSchema])),
     z.array(jsonMapMapSchema),
   ]),
 );

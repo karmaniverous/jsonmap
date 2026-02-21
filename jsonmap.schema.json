@@ -1,79 +1,108 @@
 {
-  "$ref": "#/definitions/JsonMapMap",
-  "definitions": {
-    "JsonMapMap": {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
       "anyOf": [
         {
-          "type": [
-            "string",
-            "number",
-            "boolean",
-            "null"
-          ]
+          "type": "string"
         },
         {
-          "type": "object",
-          "additionalProperties": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/JsonMapMap"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "$": {
-                    "anyOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "method": {
-                            "type": "string"
-                          },
-                          "params": {
-                            "anyOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              }
-                            ]
-                          }
-                        },
-                        "required": [
-                          "method",
-                          "params"
-                        ],
-                        "additionalProperties": false
-                      },
-                      {
-                        "type": "array",
-                        "items": {
-                          "$ref": "#/definitions/JsonMapMap/anyOf/1/additionalProperties/anyOf/1/properties/$/anyOf/0"
-                        }
-                      }
-                    ]
-                  }
-                },
-                "required": [
-                  "$"
-                ],
-                "additionalProperties": false
-              }
-            ]
-          }
+          "type": "number"
         },
         {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/JsonMapMap"
-          }
+          "type": "boolean"
+        },
+        {
+          "type": "null"
         }
       ]
+    },
+    {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "$ref": "#"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "$": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "type": "string"
+                      },
+                      "params": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "method",
+                      "params"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string"
+                        },
+                        "params": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "method",
+                        "params"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                ]
+              }
+            },
+            "required": [
+              "$"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    {
+      "type": "array",
+      "items": {
+        "$ref": "#"
+      }
     }
-  },
-  "$schema": "http://json-schema.org/draft-07/schema#"
+  ]
 }
