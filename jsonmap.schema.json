@@ -1,0 +1,79 @@
+{
+  "$ref": "#/definitions/JsonMapMap",
+  "definitions": {
+    "JsonMapMap": {
+      "anyOf": [
+        {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/JsonMapMap"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "$": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "method": {
+                            "type": "string"
+                          },
+                          "params": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "method",
+                          "params"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/definitions/JsonMapMap/anyOf/1/additionalProperties/anyOf/1/properties/$/anyOf/0"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "$"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/JsonMapMap"
+          }
+        }
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -48,7 +48,8 @@
     "ts-node": "^10.9.2",
     "tslib": "^2.6.3",
     "typescript": "^5.5.3",
-    "typescript-eslint": "^7.16.1"
+    "typescript-eslint": "^7.16.1",
+    "zod-to-json-schema": "^3.25.1"
   },
   "exports": {
     ".": {
@@ -63,7 +64,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "jsonmap.schema.json"
   ],
   "homepage": "https://github.com/karmaniverous/jsonmap#readme",
   "keywords": [
@@ -108,7 +110,8 @@
     "url": "https://github.com/karmaniverous/jsonmap"
   },
   "scripts": {
-    "build": "rimraf dist && rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
+    "build": "rimraf dist && rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript && npm run generate:schema",
+    "generate:schema": "node --experimental-strip-types scripts/generate-json-schema.ts",
     "knip": "knip",
     "lint": "eslint src/** && prettier -c src",
     "lint:fix": "eslint --fix src/** && prettier --write src",
