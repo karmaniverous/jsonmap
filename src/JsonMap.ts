@@ -97,7 +97,7 @@ class JsonMap {
     output: Json,
     path = '',
   ): Promise<Json> {
-    console.debug('#transform params:\n', { node, input, output, path });
+    // console.debug('#transform params:\n', { node, input, output, path });
 
     // Checks if the current node is an object and has only a '$' key
     if (node instanceof Object && _.size(node) === 1 && '$' in node) {
@@ -105,14 +105,14 @@ class JsonMap {
       const transformations = _.castArray(
         node.$ as JsonMapTransform | JsonMapTransform[],
       );
-      console.debug('transformations:\n', transformations);
+      // console.debug('transformations:\n', transformations);
 
       // Array to store the results of the transformations
       const results: Json = [];
 
       // Iterates over each transformation
       for (const transformation of transformations) {
-        console.debug('processing transformation:\n', transformation);
+        // console.debug('processing transformation:\n', transformation);
 
         // Resolves the object path for the transformation
         const { obj: methodObj, path: methodPath } = this.#resolvePath(
@@ -136,7 +136,7 @@ class JsonMap {
           },
         );
 
-        console.debug('resolved transformation params:\n', params);
+        // console.debug('resolved transformation params:\n', params);
 
         // Calls the specified method on the resolved object with the resolved parameters
         const result = (await _.invoke(
@@ -145,7 +145,7 @@ class JsonMap {
           ...params,
         )) as Json;
 
-        console.debug('transformation result:\n', result);
+        // console.debug('transformation result:\n', result);
 
         // Stores the result of the transformation
         results.unshift(result);
@@ -154,7 +154,7 @@ class JsonMap {
       // Sets the output at the specified path to the last result of the transformations & returns.
       _.set(output as object, path, results[0]);
 
-      console.debug('updated output:\n', output);
+      // console.debug('updated output:\n', output);
 
       return results[0];
     }

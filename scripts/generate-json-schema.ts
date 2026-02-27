@@ -19,4 +19,4 @@ const outPath = resolve(import.meta.dirname, '..', 'jsonmap.schema.json');
 
 writeFileSync(outPath, JSON.stringify(jsonSchema, null, 2) + '\n');
 
-console.log(`Wrote ${outPath}`);
+// console.log(`Wrote ${outPath}`);
